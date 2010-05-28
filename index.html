@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html class="no-js">
+  <head>
+    <title>WTF CNN?</title>
+	  <link rel="shortcut icon" href="/favicon.ico" /> 
+	  <link rel="icon" href="/favicon.ico" type="image/x-icon" /> 
+    <link rel="stylesheet" type="text/css" href="main.css"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="modernizr-1.1.min.js"></script>
+    <script type="text/javascript">
+      var addthis_share = {
+        templates: { twitter: 'WTF CNN!? http://wtfcnn.com #wtfcnn' }
+      }
+      
+      function updatePartitions() {
+        var mid = $("#ribbon").offset()["top"] + ($("#ribbon").height()/2);
+        $(".frame.top").height(mid);
+        $(".frame.bottom").height($(window).height() - mid)
+      }
+
+      function loadFrame(frame, url) {
+        if (frame.attr("src") != url) {
+          frame.attr("src", url).siblings(".overlay").fadeIn();
+        }
+      }
+
+      function customComparison(custom) {
+        if (!custom) {
+          custom = decodeURIComponent(window.location.hash.substr(1));
+        }
+        $(".close").click();
+        var sites = custom.split(",");
+        var first = sites.shift().split("|");
+        loadFrame($(".top iframe"), first[0]);
+        if (first[1]) {
+          $("#target-caption").removeClass("default").children("span").text(first[1]);
+        }
+        if (sites.length > 0) {
+          $("#compare-target").empty();
+          $.each(sites, function(index, site) {
+            site = site.split("|");
+            $("<option>")
+              .val(site[0])
+              .text(site[1] || site[0])
+              .appendTo($("#compare-target"));
+          });
+          loadFrame($(".frame.bottom iframe"), $("#compare-target").val());
+        }
+        addthis_share.templates.twitter = "WTF!? {{url}} #wtfcnn";
+      }
+
+      $(document).ready(function() {
+        $("iframe").load(function () {
+          $(this).siblings(".overlay").fadeOut();
+          $("#ribbon .shadow").animate({"opacity":1});
+        });
+		
+        $(".close").click(function(e) {
+          $("#intro").fadeOut();
+          $("#backdrop").fadeOut();
+          if (Modernizr.opacity) { $("#ribbon").fadeIn(2000); }
+          e.preventDefault();
+        });
+		
+        $("#compare-target").change(function() {
+          loadFrame($(".frame.bottom iframe"), this.value);
+        });
+
+        $(".custom-compare").click(function() {
+          customComparison(this.href.split("#")[1]);
+        });
+
+        $(window).resize(updatePartitions);
+
+        $("#ribbon").draggable({ axis:"y", containment:"parent", cursor:"move", drag:updatePartitions, iframeFix:true });
+          
+        if (window.location.hash.length > 1) {
+          customComparison();
+        } else {
+          $("#intro").show();
+          $("#backdrop").fadeTo(10, 0.75);
+        }       
+      });
+    </script>
+  </head>
+  <body>
+    <div id="content">
+      <div id="intro">
+        <div class="hello">
+          <a href="#" class="close" title="Close this dialog"><img src="images/x.png"/></a>
+          <h1><em><img class="logowtf" src="images/wtf-s.png" alt="WTF"/><img class="logowcnn" src="images/cnn-s.png" alt="CNN!?"/></em></h1>
+          <h2>We deserve better than this.</h2>
+          <p>If you've ever been frustrated by what headlines the <a href="http://www.cnn.com">CNN.com front page</a>, this is the site for you.  Compare their front page at any given time to that of <a href="http://english.aljazeera.net/">Al-Jazeera English</a> or a host of other mainstream news websites (and <a href="http://fark.com">Fark<a> - see if you can spot the difference).</p>
+          <p class="ps">Hint: want to compare <a class="custom-compare" href="#http://foxnews.com|FOX">other</a> <a class="custom-compare" href="#http://us.cnn.com/,http://edition.cnn.com/|CNN (international)">sites</a>?</p>
+        </div>
+        <div class="letter">
+          <p>Dear CNN,</p>
+          <p>We know you think this is what we want, but it's not. We don't care what random Tweeters think about a news story, how many holograms you have in your Situation Room, or even the latest celebrity gossip.</p>
+          <p>We care about our world. Instead of using your resources to do the journalism that gives us a better understanding of this world -- we get the front page of CNN.com.</p>
+          <p>Why do we have to look enviously at the front page of Al-Jazeera English for a better sampling of important news stories at any given time? If the CNN frontpage is a reflection of consumer demand, are we to believe that their readers demand real journalism?</p>
+          <p>Consider this a gentle nudge from the anonymous Internet, CNN.</p>
+          <p class="ps">PS. We still love Wolf's beard.</p>
+        </div>
+      </div>
+      <div id="backdrop"></div>
+      <div class="frame top">
+        <div class="spacer">
+          <iframe class="cnn" src="http://us.cnn.com/"></iframe>
+          <div class="overlay"></div>
+        </div>
+      </div>
+      <div id="ribbon">
+        <div class="side left">
+          <iframe id="fblike" class="control" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwtfcnn.com&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light" scrolling="no" frameborder="0" allowTransparency="true" style="border:none; overflow:hidden; width:100px; height:px"></iframe>
+        
+          <!-- AddThis Button BEGIN -->
+          <div id="share" class="control addthis_toolbox addthis_default_style">
+            <a href="http://www.addthis.com/bookmark.php?v=250&amp;username=xa-4bd6aa1e339f4387" class="addthis_button_compact">Share:</a>
+            <a class="addthis_button_reddit"></a>
+            <a class="addthis_button_twitter"></a>
+          </div>
+          <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4bd6aa1e339f4387"></script>
+          <!-- AddThis Button END -->
+          <img class="logowtf" src="images/wtf-s.png"/>
+        </div>
+        <div class="side right">
+          <div class="default" id="target-caption"><span>CNN</span>&#8253;</div>
+          <form class="control">
+            <label for="compare-target">Compare with:</label>
+            <select id="compare-target">
+              <option value="http://www.abc.net.au/news/">ABC (Australia)</option>
+              <option value="http://english.aljazeera.net/" selected="true">Al-Jazeera (Qatar)</option>
+              <option value="http://news.bbc.co.uk/">BBC (UK)</option>
+              <option value="http://www.cbc.ca/world/">CBC (Canada)</option>
+              <option value="http://www.chinadaily.com.cn/">China Daily (China)</option>
+              <option value="http://www.dw-world.de/">Deutsche Welle (Germany)</option>
+              <option value="http://www.euronews.net/">EuroNews (Europe)</option>
+              <option value="http://www.france24.com/en/">France 24 (France)</option>
+              <option value="http://www.reuters.com/">Reuters (UK)</option>
+              <option value="http://www.npr.org/">NPR (USA)</option>
+              <option value="http://www.fark.com/">Fark (Kentucky, USA)</option>
+            </select>
+          </form>
+        </div>
+        <div class="shadow"></div>
+      </div>
+      <div class="frame bottom">
+        <div class="spacer">
+          <iframe class="other" src="http://english.aljazeera.net/"></iframe>
+          <div class="overlay"></div>
+        </div>
+      </div>
+      <div id="credits">
+        <span class="contact"><a href="mailto:contact@wtfcnn.com">contact us</a></span>
+        <span><a href="http://www.zazzle.com/breadpig">support us</a></span>
+        <span class="breadpig"><img src="images/breadpig.png"/> a <a href="http://breadpig.com">breadpig</a> project</span>
+        <span class="chromakode"><img src="images/chromakode.png"/> code by <a href="http://chromakode.com">chromakode</a></span>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+      </script>
+      <script type="text/javascript">
+      try {
+      var pageTracker = _gat._getTracker("UA-15230766-3");
+      pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+  </body>
+</html>
